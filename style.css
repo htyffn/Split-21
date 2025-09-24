@@ -1,0 +1,75 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #064e3b;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.board {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+}
+
+.hand {
+  min-height: 120px;
+  padding: 10px;
+  background: #065f46;
+  border-radius: 8px;
+}
+
+.controls button {
+  margin: 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background: #10b981;
+  color: white;
+  cursor: pointer;
+}
+
+.controls button:hover {
+  background: #059669;
+}
+
+#message {
+  margin-top: 20px;
+  font-size: 1.2em;
+}
+
+/* --- Card Styling --- */
+.card {
+  display: inline-block;
+  width: 60px;
+  height: 90px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background: white;
+  color: black;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 5px;
+  text-align: center;
+  line-height: 90px;    
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+}
+
+.card.red {
+  color: red;
+}
+
+.card.back {
+  background: repeating-linear-gradient(
+    45deg,
+    #2563eb,
+    #2563eb 10px,
+    #1e40af 10px,
+    #1e40af 20px
+  );
+  color: transparent;
+}

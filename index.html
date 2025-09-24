@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Minimal Blackjack</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>♣ Minimal Blackjack ♦</h1>
+
+  <div id="bankroll">Bankroll: $100</div>
+  <div id="bet">Bet: $10</div>
+  <div id="deck-count">Cards left: 52</div>
+
+  <div class="board">
+    <div>
+      <h2>Dealer</h2>
+      <div id="dealer-hand" class="hand"></div>
+    </div>
+    <div>
+      <h2>You</h2>
+      <div id="player-hand" class="hand"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="hit">Hit</button>
+    <button id="stand">Stand</button>   
+    <button id="restart">Restart</button>
+  </div>
+
+  <div id="message"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
