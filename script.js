@@ -79,9 +79,26 @@ function dealHands() {
 }
 
 function disableControls(state) {
-  document.getElementById('hit').disabled = state;
-  document.getElementById('stand').disabled = state;
-  document.getElementById('new-round').disabled = state;
+  const hitBtn = document.getElementById('hit');
+  const standBtn = document.getElementById('stand');
+  const newRoundBtn = document.getElementById('new-round');
+
+  if (gameOver) {
+    // Hide hit/stand, show new-round when game is over
+    hitBtn.style.display = 'none';
+    standBtn.style.display = 'none';
+    newRoundBtn.style.display = 'inline-block';
+  } else {
+    // Show hit/stand, hide new-round during gameplay
+    hitBtn.style.display = 'inline-block';
+    standBtn.style.display = 'inline-block';
+    newRoundBtn.style.display = 'none';
+  }
+
+  // Apply disabled state
+  hitBtn.disabled = state;
+  standBtn.disabled = state;
+  newRoundBtn.disabled = state;
 }
 
 function render() {
@@ -99,7 +116,9 @@ function render() {
   document.getElementById('bankroll').textContent = `Bankroll: $${bankroll}`;
   document.getElementById('bet').textContent = `Bet: $${bet}`;
   document.getElementById('deck-count').textContent =
-  `Cards left: ${deck.length}`;
+    `Cards left: ${deck.length}`;
+  
+  disableControls(false);
 }
 
 
