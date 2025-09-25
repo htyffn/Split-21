@@ -81,7 +81,7 @@ function dealHands() {
 function disableControls(state) {
   document.getElementById('hit').disabled = state;
   document.getElementById('stand').disabled = state;
-  document.getElementById('restart').disabled = state;
+  document.getElementById('new-round').disabled = state;
 }
 
 function render() {
@@ -146,7 +146,7 @@ document.getElementById('stand').onclick = () => {
   endRound();
 };
 
-document.getElementById('restart').onclick = () => {
+document.getElementById('new-round').onclick = () => {
   startRound();
 };
 
