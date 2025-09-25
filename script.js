@@ -54,13 +54,19 @@ function handToHTML(hand) {
 function startRound() {
   // If deck doesn't exist yet or it's below the shuffle threshold → reshuffle
   if (!deck || deck.length < (DECKS * 52 * SHUFFLE_POINT)) {
-    // Disable controls during shuffle
-    disableControls(true);
-    document.getElementById('message').textContent = "🔄 Shuffling new shoe...";
-
+    // Hide board and controls, show centered shuffle message
+    document.querySelector('.board').style.display = 'none';
+    document.querySelector('.controls').style.display = 'none';
+    document.getElementById('message').innerHTML = 
+      '<div style="text-align: center; font-size: 24px; margin: 50px 0; animation: pulse 1s infinite;">' +
+      '🔄 Shuffling new shoe...' +
+      '</div>';
+    
     setTimeout(() => {
       deck = shuffle(createDeck(DECKS));
-      console.log("🔄 Shuffling new shoe...");
+      // Show board and controls again
+      document.querySelector('.board').style.display = 'block';
+      document.querySelector('.controls').style.display = 'block';
       disableControls(false);
       dealHands();
     }, 3000 + Math.random() * 2000); // 3–5 seconds delay
