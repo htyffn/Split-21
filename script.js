@@ -8,9 +8,11 @@ let gameOver = false;
 
 function createDeck() {
   const d = [];
-  for (let s of suits) {
-    for (let r of ranks) {
-      d.push({rank:r, suit:s});
+  for (let n = 0; n < DECKS; n++) {
+    for (let s of suits) {
+      for (let r of ranks) {
+        d.push({rank:r, suit:s});
+      }
     }
   }
   return d;
