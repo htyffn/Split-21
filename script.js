@@ -6,6 +6,13 @@ const SHUFFLE_POINT = 0.25;
 let deck, playerHand, dealerHand, bankroll = 100, bet = 10;
 let gameOver = false;
 
+// SECRET
+let typedSequence = '';
+let sequenceTimeout;
+let isAwesomeMode = false;
+let colorInterval;
+let originalBackgroundColor = '#064e3b';
+
 function createDeck() {
   const d = [];
   for (let s of suits) {
@@ -50,6 +57,59 @@ function handToHTML(hand) {
     return `<div class="${classes}">${c.rank}${c.suit}</div>`;
   }).join('');
 }
+
+function getSecretModeCol() {
+  const letters = '0123456789ABCDEF';
+  let col = '#';
+  for (let i = 0; i < 6; i++) {
+    col += letters[Math.floor(Math.random() * 16)];
+  }
+  return col;
+}
+
+function startSecretMode() {
+  isAwesomeMode = true;
+  colorInterval = setInterval(() => {
+    document.body.style.backgroundColor = getSecretModeCol();
+  }, 100);
+}
+
+function stopSecretMode() {
+  isAwesomeMode = false;
+  clearInterval(colorInterval);
+  document.body.style.backgroundColor = originalBackgroundColor;
+}
+
+function handleKeyPress(event) {
+  if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') return;
+
+  const key = event.key.toUpperCase();
+
+  if (sequenceTimeout) {
+    clearTimeout(sequenceTimeout);
+  }
+
+  typedSequence += key;
+
+  if (typedSequence.length > 7) {
+    typedSequence = typedSequence.slice(-7);
+  }
+
+  if (typedSequence.includes("AWESOME")) {
+    if (!isAwesomeMode) {
+      startSecretMode();
+    } else {
+      stopSecretMode();
+    }
+    typedSequence = '';
+  }
+
+  sequenceTimeout = setTimeout(() => {
+    typedSequence = '';
+  }, 2000);
+}
+
+document.addEventListener('keydown', handleKeyPress);
 
 function startRound() {
   // If deck doesn't exist yet or it's below the shuffle threshold → reshuffle
