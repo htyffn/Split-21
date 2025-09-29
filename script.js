@@ -1,6 +1,6 @@
 const suits = ['♠', '♥', '♦', '♣'];
 const ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
-const DECKS = 1; 
+const DECKS = 6; 
 const SHUFFLE_POINT = 0.25; 
 
 let deck, playerHand, dealerHand, bankroll = 100, bet = 10;
