@@ -39,7 +39,7 @@ jobs:
             ${{ runner.os }}-bun-
 
       - name: 🧪 Run unit tests
-        run: bun test --reporter=junit
+        run: bun test
         
       - name: 📊 Generate test coverage
         run: bun test --coverage --coverage-reporter=lcov --coverage-reporter=text
