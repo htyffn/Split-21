@@ -158,6 +158,12 @@ function endRound() {
 
 document.getElementById('hit').onclick = () => {
   if (gameOver) return;
+  // Check if player already has 21
+  if (handValue(playerHand) === 21) {
+    document.getElementById('message').textContent = "You have 21! Please stand.";
+    document.getElementById('hit').style.display = 'none';
+    return;
+  }
   playerHand.push(deck.pop());
   if (handValue(playerHand) > 21) {
     endRound();
