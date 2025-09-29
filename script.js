@@ -6,6 +6,14 @@ const SHUFFLE_POINT = 0.25;
 let deck, playerHand, dealerHand, bankroll = 100, bet = 10;
 let gameOver = false;
 
+function validateBet() {
+  if (bet > bankroll) {
+    bet = bankroll;
+    document.getElementById('message').textContent = `Bet adjusted to $${bet} (maximum possible).`;
+  }
+  return bet > 0;
+}
+
 // SECRET
 let typedSequence = '';
 let sequenceTimeout;
@@ -114,6 +122,12 @@ function handleKeyPress(event) {
 document.addEventListener('keydown', handleKeyPress);
 
 function startRound() {
+  // Validate bet before starting
+  if (!validateBet()) {
+    document.getElementById('message').textContent = "Cannot start round - insufficient funds!";
+    return;
+  }
+  
   // If deck doesn't exist yet or it's below the shuffle threshold → reshuffle
   if (!deck || deck.length < (DECKS * 52 * SHUFFLE_POINT)) {
     // Hide board and controls, show centered shuffle message
@@ -146,21 +160,48 @@ function dealHands() {
   document.getElementById('message').textContent = "Your move...";
 }
 
+function handleBankruptcy() {
+  const resetBtn = document.createElement('button');
+  resetBtn.id = 'reset-game';
+  resetBtn.textContent = 'Reset Game';
+  resetBtn.onclick = resetGame;
+  
+  const controlsDiv = document.querySelector('.controls');
+  controlsDiv.appendChild(resetBtn);
+  disableControls(true);
+}
+
+function resetGame() {
+  bankroll = 100;
+  bet = 10;
+  document.getElementById('reset-game')?.remove();
+  startRound();
+}
+
 function disableControls(state) {
   const hitBtn = document.getElementById('hit');
   const standBtn = document.getElementById('stand');
   const newRoundBtn = document.getElementById('new-round');
+  const resetBtn = document.getElementById('reset-game');
 
-  if (gameOver) {
+  if (bankroll === 0) {
+    // Show only reset button when bankrupt
+    hitBtn.style.display = 'none';
+    standBtn.style.display = 'none';
+    newRoundBtn.style.display = 'none';
+    if (resetBtn) resetBtn.style.display = 'inline-block';
+  } else if (gameOver) {
     // Hide hit/stand, show new-round when game is over
     hitBtn.style.display = 'none';
     standBtn.style.display = 'none';
     newRoundBtn.style.display = 'inline-block';
+    if (resetBtn) resetBtn.style.display = 'none';
   } else {
     // Show hit/stand, hide new-round during gameplay
     hitBtn.style.display = 'inline-block';
     standBtn.style.display = 'inline-block';
     newRoundBtn.style.display = 'none';
+    if (resetBtn) resetBtn.style.display = 'none';
   }
 
   // Apply disabled state
@@ -202,7 +243,7 @@ function endRound() {
   let msg;
 
   if (playerVal > 21) {
-    bankroll -= bet;
+    bankroll = Math.max(0, bankroll - bet);
     msg = "You bust! Dealer wins.";
   } else if (dealerVal > 21 || playerVal > dealerVal) {
     bankroll += bet;
@@ -210,8 +251,18 @@ function endRound() {
   } else if (playerVal === dealerVal) {
     msg = "Push (tie).";
   } else {
-    bankroll -= bet;
+    bankroll = Math.max(0, bankroll - bet);
     msg = "Dealer wins.";
+  }
+
+  // Check for bankruptcy after updating bankroll
+  if (bankroll === 0) {
+    msg += " Game Over - Bankrupt!";
+    handleBankruptcy();
+  } else if (bankroll < bet) {
+    // Automatically adjust bet to maximum possible
+    bet = bankroll;
+    msg += ` Bet adjusted to $${bet} (maximum possible).`;
   }
 
   document.getElementById('message').textContent = msg;
