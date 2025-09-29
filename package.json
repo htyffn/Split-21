@@ -1,0 +1,10 @@
+{
+  "dependencies": {},
+  "devDependencies": {
+    "@happy-dom/global-registrator": "^19.0.1"
+  },
+  "scripts": {
+    "test": "bun test", 
+    "test:watch": "bun test --watch"
+  }
+}
