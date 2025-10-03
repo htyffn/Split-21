@@ -231,11 +231,16 @@ function render() {
 }
 
 
-function endRound() {
+async function endRound() {
   gameOver = true;
 
+  // Show dealer's initial cards first
+  render();
+  
   while (handValue(dealerHand) < 17) {
+    await new Promise(resolve => setTimeout(resolve, 500)); // Wait 500ms between cards
     dealerHand.push(deck.pop());
+    render(); // Update display after each card
   }
 
   const playerVal = handValue(playerHand);
@@ -285,9 +290,10 @@ document.getElementById('hit').onclick = () => {
   }
 };
 
-document.getElementById('stand').onclick = () => {
+document.getElementById('stand').onclick = async () => {
   if (gameOver) return;
-  endRound();
+  disableControls(true); // Disable controls while dealer is drawing
+  await endRound();
 };
 
 document.getElementById('new-round').onclick = () => {
